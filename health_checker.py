@@ -22,6 +22,7 @@ st.markdown(
     }
     .reportview-container {
         background: #f5f5f5;
+        font-size: 16px;
     }
     .stButton button {
         background: #4CAF50;
@@ -51,10 +52,10 @@ if 'profile_submitted' not in st.session_state:
 
 if 'symptoms_submitted' not in st.session_state:
     st.session_state.symptoms_submitted = False
-
+placeholder = st.empty()
 # Profile Information Form
 if not st.session_state.profile_submitted:
-    with st.form(key='profile_form'):
+    with placeholder.form(key='profile_form'):
         st.header("Your Profile")
         st.session_state.name = st.text_input("What's your name?", st.session_state.get('name', ''))
         st.session_state.gender = st.radio("What's your gender?", ("Male", "Female"), index={"Male": 0, "Female": 1}.get(st.session_state.get('gender'), 0))
@@ -67,11 +68,14 @@ if not st.session_state.profile_submitted:
 
         if submit_profile:
             st.session_state.profile_submitted = True
+            placeholder.empty()
+            
 
 # Symptoms Form
 if st.session_state.profile_submitted and not st.session_state.symptoms_submitted:
-    with st.form(key='symptom_form'):
+    with placeholder.form(key='symptom_form'):
         st.header("Symptom Checker")
+        st.write(f"Hello {st.session_state.get('name', '')}! Please complete the following questions:")
         symptoms = {
             "Do you have a headache?": "headache",
             "Do you have an earache?": "earache",
@@ -88,8 +92,9 @@ if st.session_state.profile_submitted and not st.session_state.symptoms_submitte
 
         if submit_symptoms:
             st.session_state.symptoms_submitted = True
+            placeholder.empty()
 
-# Summary
+# Report Summary
 if st.session_state.profile_submitted and st.session_state.symptoms_submitted:
     st.header("Summary")
     st.write("Here is the information you provided:")
