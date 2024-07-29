@@ -118,3 +118,30 @@ if st.session_state.profile_submitted and st.session_state.symptoms_submitted:
     }
     for key, question in symptoms.items():
         st.write(f"{question}: {st.session_state.get(key, '')}")
+        
+    # Prediction logic
+    def calculate_probabilities(symptoms):
+        # Define simple rules for probabilities
+        conditions = {
+            "Flu": {"fever": 1, "cough": 1, "sore_throat": 1},
+            "COVID-19": {"fever": 1, "cough": 1, "headache": 0.5, "muscle_pain": 0.5},
+            "Common Cold": {"cough": 1, "sore_throat": 1, "headache": 0.5},
+        }
+
+        results = {}
+        for condition, symptom_weights in conditions.items():
+            score = sum(symptom_weights.get(symptom, 0) * (1 if st.session_state.get(symptom, "No") == "Yes" else 0) for symptom in symptom_weights)
+            results[condition] = score * 100
+
+        # Normalize probabilities to sum to 100
+        total = sum(results.values())
+        if total > 0:
+            results = {condition: prob / total * 100 for condition, prob in results.items()}
+
+        return results
+
+    probabilities = calculate_probabilities(symptoms.keys())
+    
+    st.write("**Prediction Results:**")
+    for condition, probability in probabilities.items():
+        st.write(f"{condition}: {probability:.2f}%")
