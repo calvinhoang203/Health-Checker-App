@@ -7,6 +7,9 @@ st.set_page_config(page_title="Health Checker", layout="centered")
 st.markdown(
     """
     <style>
+    [data-testid="stAppViewContainer"] {
+    background-image: url("https://images.unsplash.com/photo-1501426026826-31c667bdf23d");
+    background-size: cover;
     .reportview-container {
         background: #f5f5f5;
     }
