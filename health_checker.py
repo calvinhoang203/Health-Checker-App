@@ -10,9 +10,6 @@ st.set_page_config(page_title="Health Checker",
 
 
 
-
-
-
 # Add some style to make it more user-friendly
 st.markdown(
     """
