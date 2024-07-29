@@ -1,17 +1,20 @@
 import base64
 import streamlit as st
-
+from pathlib import Path
 # Set page configuration
 st.set_page_config(page_title="Health Checker", layout="centered")
 
-@st.experimental_memo
-def get_img_as_base64(file):
-    with open(file, "rb") as f:
-        data = f.read()
-    return base64.b64encode(data).decode()
 
 
-img = get_img_as_base64("image.jpg")
+def img_to_bytes(img_path):
+    img_bytes = Path(img_path).read_bytes()
+    encoded = base64.b64encode(img_bytes).decode()
+    return encoded
+def img_to_html(img_path):
+    img_html = "<img src='data:image/png;base64,{}' class='img-fluid'>".format(
+      img_to_bytes(img_path)
+    )
+    return img_html
 
 
 # Add some style to make it more user-friendly
@@ -19,7 +22,7 @@ st.markdown(
     """
     <style>
     [data-testid="stAppViewContainer"] {
-    background-image: url();
+    background-image: url('https://img.freepik.com/premium-vector/abstract-medical-background-with-icons-symbols-template-with-concept-idea-healthcare-technology-innovation-medicine-health-science-research_120542-544.jpg?size=626&ext=jpg&ga=GA1.1.1714815104.1722218449&semt=ais_user');
     background-size: cover;
     .reportview-container {
         background: #f5f5f5;
