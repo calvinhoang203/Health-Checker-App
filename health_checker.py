@@ -1,6 +1,4 @@
-import base64
 import streamlit as st
-from pathlib import Path
 # Set page configuration
 st.set_page_config(page_title="Health Checker",
                    page_icon = ":hospital:",
@@ -8,15 +6,7 @@ st.set_page_config(page_title="Health Checker",
 
 
 
-def img_to_bytes(img_path):
-    img_bytes = Path(img_path).read_bytes()
-    encoded = base64.b64encode(img_bytes).decode()
-    return encoded
-def img_to_html(img_path):
-    img_html = "<img src='data:image/png;base64,{}' class='img-fluid'>".format(
-      img_to_bytes(img_path)
-    )
-    return img_html
+
 
 
 # Add some style to make it more user-friendly
@@ -59,12 +49,15 @@ with st.form(key='profile_form'):
     st.header("User Profile")
     st.session_state.name = st.text_input("What's your name?", st.session_state.get('name', ''))
     st.session_state.gender = st.radio("What's your gender?", ("Male", "Female"), index={"Male": 0, "Female": 1}.get(st.session_state.get('gender'), 0))
-    st.session_state.dob = st.date_input("What's your date of birth?", st.session_state.get('dob', None))
+    st.session_state.dob = st.date_input("What's your date of birth?", st.session_state.get('date_of_birth', None))
     st.session_state.smoker = st.radio("Are you a current smoker or have you been a smoker in the past?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('smoker'), 0))
     st.session_state.hypertension = st.radio("Have you ever been diagnosed with high blood pressure?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('hypertension'), 0))
     st.session_state.diabetes = st.radio("Do you have diabetes?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('diabetes'), 0))
+    # Submit button
+    submit_button_1 = st.form_submit_button(label='Submit')   
 
-    # Symptoms Information
+# Symptoms Information
+if submit_button_1:
     st.header("Symptom Checker")
     symptoms = {
         "Do you have a headache?": "headache",
@@ -81,9 +74,9 @@ with st.form(key='profile_form'):
         st.session_state[key] = user_symptoms[key]
 
     # Submit button
-    submit_button = st.form_submit_button(label='Submit')
+    submit_button_2 = st.form_submit_button(label='Submit')    
 
-if submit_button:
+if submit_button_2:
     st.header("Summary")
     st.write("Here is the information you provided:")
 
