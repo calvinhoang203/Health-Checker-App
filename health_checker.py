@@ -44,39 +44,53 @@ st.markdown(
 st.title("Health Checker :hospital:")
 st.write("Please fill out your profile and symptoms information.")
 
-# Profile Information
-with st.form(key='profile_form'):
-    st.header("User Profile")
-    st.session_state.name = st.text_input("What's your name?", st.session_state.get('name', ''))
-    st.session_state.gender = st.radio("What's your gender?", ("Male", "Female"), index={"Male": 0, "Female": 1}.get(st.session_state.get('gender'), 0))
-    st.session_state.dob = st.date_input("What's your date of birth?", st.session_state.get('date_of_birth', None))
-    st.session_state.smoker = st.radio("Are you a current smoker or have you been a smoker in the past?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('smoker'), 0))
-    st.session_state.hypertension = st.radio("Have you ever been diagnosed with high blood pressure?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('hypertension'), 0))
-    st.session_state.diabetes = st.radio("Do you have diabetes?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('diabetes'), 0))
-    # Submit button
-    submit_button_1 = st.form_submit_button(label='Submit')   
 
-# Symptoms Information
-if submit_button_1:
-    st.header("Symptom Checker")
-    symptoms = {
-        "Do you have a headache?": "headache",
-        "Do you have an earache?": "earache",
-        "Do you have a fever?": "fever",
-        "Do you have a cough?": "cough",
-        "Do you have a sore throat?": "sore_throat",
-        "Do you have muscle pain?": "muscle_pain"
-    }
+# Initialize session state
+if 'profile_submitted' not in st.session_state:
+    st.session_state.profile_submitted = False
 
-    user_symptoms = {}
-    for question, key in symptoms.items():
-        user_symptoms[key] = st.radio(question, ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get(key), 0))
-        st.session_state[key] = user_symptoms[key]
+if 'symptoms_submitted' not in st.session_state:
+    st.session_state.symptoms_submitted = False
 
-    # Submit button
-    submit_button_2 = st.form_submit_button(label='Submit')    
+# Profile Information Form
+if not st.session_state.profile_submitted:
+    with st.form(key='profile_form'):
+        st.header("User Profile")
+        st.session_state.name = st.text_input("What's your name?", st.session_state.get('name', ''))
+        st.session_state.gender = st.radio("What's your gender?", ("Male", "Female"), index={"Male": 0, "Female": 1}.get(st.session_state.get('gender'), 0))
+        st.session_state.dob = st.date_input("What's your date of birth?", st.session_state.get('dob', None))
+        st.session_state.smoker = st.radio("Are you a current smoker or have you been a smoker in the past?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('smoker'), 0))
+        st.session_state.hypertension = st.radio("Have you ever been diagnosed with high blood pressure?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('hypertension'), 0))
+        st.session_state.diabetes = st.radio("Do you have diabetes?", ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get('diabetes'), 0))
 
-if submit_button_2:
+        submit_profile = st.form_submit_button(label='Submit Profile')
+
+        if submit_profile:
+            st.session_state.profile_submitted = True
+
+# Symptoms Form
+if st.session_state.profile_submitted and not st.session_state.symptoms_submitted:
+    with st.form(key='symptom_form'):
+        st.header("Symptom Checker")
+        symptoms = {
+            "Do you have a headache?": "headache",
+            "Do you have an earache?": "earache",
+            "Do you have a fever?": "fever",
+            "Do you have a cough?": "cough",
+            "Do you have a sore throat?": "sore_throat",
+            "Do you have muscle pain?": "muscle_pain"
+        }
+
+        for question, key in symptoms.items():
+            st.session_state[key] = st.radio(question, ("Yes", "No"), index={"Yes": 0, "No": 1}.get(st.session_state.get(key), 0))
+
+        submit_symptoms = st.form_submit_button(label='Submit Symptoms')
+
+        if submit_symptoms:
+            st.session_state.symptoms_submitted = True
+
+# Summary
+if st.session_state.profile_submitted and st.session_state.symptoms_submitted:
     st.header("Summary")
     st.write("Here is the information you provided:")
 
@@ -89,7 +103,13 @@ if submit_button_2:
     st.write(f"Diabetes: {st.session_state.get('diabetes', '')}")
 
     st.write("**Symptoms:**")
-    for symptom in symptoms.values():
-        st.write(f"{symptom.replace('_', ' ').capitalize()}: {st.session_state.get(symptom, '')}")
-
-
+    symptoms = {
+        "headache": "Do you have a headache?",
+        "earache": "Do you have an earache?",
+        "fever": "Do you have a fever?",
+        "cough": "Do you have a cough?",
+        "sore_throat": "Do you have a sore throat?",
+        "muscle_pain": "Do you have muscle pain?"
+    }
+    for key, question in symptoms.items():
+        st.write(f"{question}: {st.session_state.get(key, '')}")
