@@ -55,7 +55,7 @@ if 'symptoms_submitted' not in st.session_state:
 # Profile Information Form
 if not st.session_state.profile_submitted:
     with st.form(key='profile_form'):
-        st.header("User Profile")
+        st.header("Your Profile")
         st.session_state.name = st.text_input("What's your name?", st.session_state.get('name', ''))
         st.session_state.gender = st.radio("What's your gender?", ("Male", "Female"), index={"Male": 0, "Female": 1}.get(st.session_state.get('gender'), 0))
         st.session_state.dob = st.date_input("What's your date of birth?", st.session_state.get('dob', None))
