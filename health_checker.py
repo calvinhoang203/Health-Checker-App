@@ -2,7 +2,9 @@ import base64
 import streamlit as st
 from pathlib import Path
 # Set page configuration
-st.set_page_config(page_title="Health Checker", layout="centered")
+st.set_page_config(page_title="Health Checker",
+                   page_icon = ":hospital:",
+                   layout="centered")
 
 
 
@@ -49,7 +51,7 @@ st.markdown(
 )
 
 # Page layout
-st.title("Health Checker")
+st.title("Health Checker :hospital:")
 st.write("Please fill out your profile and symptoms information.")
 
 # Profile Information
