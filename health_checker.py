@@ -2,7 +2,7 @@ import streamlit as st
 import datetime
 import pandas as pd
 import numpy as np
-import joblib
+
 # Set page configuration
 st.set_page_config(page_title="Health Checker",
                    page_icon = ":hospital:",
