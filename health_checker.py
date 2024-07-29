@@ -106,7 +106,7 @@ if st.session_state.profile_submitted and st.session_state.symptoms_submitted:
     st.write(f"Smoker: {st.session_state.get('smoker', '')}")
     st.write(f"High Blood Pressure: {st.session_state.get('hypertension', '')}")
     st.write(f"Diabetes: {st.session_state.get('diabetes', '')}")
-
+    st.write('')
     st.write("**Symptoms:**")
     symptoms = {
         "headache": "Do you have a headache?",
