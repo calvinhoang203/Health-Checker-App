@@ -1,14 +1,25 @@
+import base64
 import streamlit as st
 
 # Set page configuration
 st.set_page_config(page_title="Health Checker", layout="centered")
+
+@st.experimental_memo
+def get_img_as_base64(file):
+    with open(file, "rb") as f:
+        data = f.read()
+    return base64.b64encode(data).decode()
+
+
+img = get_img_as_base64("image.jpg")
+
 
 # Add some style to make it more user-friendly
 st.markdown(
     """
     <style>
     [data-testid="stAppViewContainer"] {
-    background-image: url("https://images.unsplash.com/photo-1501426026826-31c667bdf23d");
+    background-image: url();
     background-size: cover;
     .reportview-container {
         background: #f5f5f5;
