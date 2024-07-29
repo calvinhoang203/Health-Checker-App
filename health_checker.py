@@ -24,6 +24,10 @@ st.markdown(
     [data-testid="stAppViewContainer"] {
     background-image: url('https://img.freepik.com/premium-vector/abstract-medical-background-with-icons-symbols-template-with-concept-idea-healthcare-technology-innovation-medicine-health-science-research_120542-544.jpg?size=626&ext=jpg&ga=GA1.1.1714815104.1722218449&semt=ais_user');
     background-size: cover;
+    }
+    [data-testid="stHeader"] {
+    background: rgba(0,0,0,0);
+    }
     .reportview-container {
         background: #f5f5f5;
     }
